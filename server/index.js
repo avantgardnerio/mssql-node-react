@@ -1,7 +1,17 @@
 const express = require('express')
 const app = express()
+const path = require('path')
 
-app.get('/', (req, res) => res.send('Hello World!'))
+const people = [
+    {id: 1, givenName: 'Alan', familyName: 'Turing'},
+    {id: 2, givenName: 'Alan', familyName: 'Kay'},
+]
+
+app.get('/api/people', (req, res) => {
+    res.json(people);
+})
+
+app.use(express.static(path.join(__dirname, '../build')));
 
 let server;
 const promiseToStart = new Promise(resolve => {

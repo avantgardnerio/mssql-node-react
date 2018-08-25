@@ -6848,6 +6848,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+w3c-webdriver@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/w3c-webdriver/-/w3c-webdriver-0.14.0.tgz#5e75287b32d56d6c04283723c52b2b71a89100eb"
+
 walker@~1.0.5:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
