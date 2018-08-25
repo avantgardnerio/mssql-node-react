@@ -13,7 +13,7 @@ describe('the server', () => {
             desiredCapabilities: {
                 "browserName": "chrome",
                 "chromeOptions": {
-                    "args": ["--headless", "--disable-gpu", "--no-sandbox"]
+                    "args": ["--headless", "--disable-gpu", "--no-sandbox", "--enable-logging", "--v=1"]
                 }
             }
         });
