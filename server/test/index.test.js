@@ -1,6 +1,8 @@
 const { expect } = require('chai')
 const webdriver = require('w3c-webdriver')
-require('isomorphic-fetch');
+require('isomorphic-fetch')
+
+const knex = require('../db.js')
 
 const { stop, promiseToStart } = require('../index.js')
 
@@ -20,17 +22,17 @@ describe('the server', () => {
     })
 
     after(async () => {
-        if(session) {
+        if (session) {
             await session.delete()
         }
         await stop()
     })
 
     it('should serve APIs', async () => {
-        const expected = [
-            {"id":1,"givenName":"Alan","familyName":"Turing"},
-            {"id":2,"givenName":"Alan","familyName":"Kay"}
-        ];
+        await knex('person').del()
+        const turing = await knex('person').insert({ "givenName": "Alan", "familyName": "Turing" }).returning('*')
+        const kay = await knex('person').insert({ "givenName": "Alan", "familyName": "Kay" }).returning('*')
+        const expected = [turing[0], kay[0]];
         const url = 'http://127.0.0.1:3000/api/people';
 
         const actual = await (await fetch(url)).json();

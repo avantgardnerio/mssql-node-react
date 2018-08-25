@@ -5,13 +5,10 @@ const http = require('http')
 const knex = require('./db.js')
 
 const app = express()
-const people = [
-    { id: 1, givenName: 'Alan', familyName: 'Turing' },
-    { id: 2, givenName: 'Alan', familyName: 'Kay' },
-]
 
-app.get('/api/people', (req, res) => {
-    res.json(people);
+app.get('/api/people', async (req, res) => {
+    const people = await knex.select().table('person')
+    res.json(people)
 })
 
 app.use(express.static(path.join(__dirname, '../build')));
