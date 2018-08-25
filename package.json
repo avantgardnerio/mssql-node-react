@@ -5,6 +5,8 @@
   "dependencies": {
     "express": "^4.16.3",
     "isomorphic-fetch": "^2.2.1",
+    "knex": "^0.15.2",
+    "mssql": "^4.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5"
