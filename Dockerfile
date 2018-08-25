@@ -11,8 +11,10 @@ RUN npm install -g yarn
 
 # chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 
-RUN apt-get install -y gdebi unzip
-RUN gdebi google-chrome-stable_current_amd64.deb
+RUN apt-get install -y \
+    gdebi unzip fonts-liberation libappindicator3-1 libasound2 libxss1 xdg-utils \
+    libasound2-data libdbusmenu-glib4 libdbusmenu-gtk3-4 libindicator3-7 libnspr4 libnss3
+RUN dpkg -i google-chrome-stable_current_amd64.deb
 
 # chromedriver
 RUN wget -q https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
@@ -23,4 +25,9 @@ RUN unzip chromedriver_linux64.zip && \
 
 # MS-SQL
 ENV ACCEPT_EULA true
-CMD /opt/mssql/bin/sqlservr
+CMD /opt/mssql/bin/sqlservr & \
+    chromedriver --verbose & \
+    cd /workspace && \
+    yarn build && \
+    yarn server-test && \
+    CI=true yarn test
