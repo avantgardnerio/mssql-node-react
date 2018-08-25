@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const webdriver = require('w3c-webdriver')
 require('isomorphic-fetch');
 
-const { server, promiseToStart } = require('../index.js')
+const { stop, promiseToStart } = require('../index.js')
 
 describe('the server', () => {
     let session;
@@ -23,7 +23,7 @@ describe('the server', () => {
         if(session) {
             await session.delete()
         }
-        await server.close()
+        await stop()
     })
 
     it('should serve APIs', async () => {

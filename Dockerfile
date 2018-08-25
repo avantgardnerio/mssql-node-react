@@ -25,6 +25,7 @@ RUN unzip chromedriver_linux64.zip && \
 
 # MS-SQL
 ENV ACCEPT_EULA true
+ENV SA_PASSWORD Password!
 CMD /opt/mssql/bin/sqlservr & \
     chromedriver --verbose & \
     cd /workspace && \

@@ -1,10 +1,13 @@
 const express = require('express')
-const app = express()
 const path = require('path')
+const http = require('http')
 
+const knex = require('./db.js')
+
+const app = express()
 const people = [
-    {id: 1, givenName: 'Alan', familyName: 'Turing'},
-    {id: 2, givenName: 'Alan', familyName: 'Kay'},
+    { id: 1, givenName: 'Alan', familyName: 'Turing' },
+    { id: 2, givenName: 'Alan', familyName: 'Kay' },
 ]
 
 app.get('/api/people', (req, res) => {
@@ -13,12 +16,24 @@ app.get('/api/people', (req, res) => {
 
 app.use(express.static(path.join(__dirname, '../build')));
 
-let server;
-const promiseToStart = new Promise(resolve => {
-    server = app.listen(3000, () => {
-        console.log('Example app listening on port 3000!')
-        resolve(true);
-    })
-}); 
+const server = http.createServer(app);
 
-module.exports = { app, server, promiseToStart }
+const promiseToStart = knex.migrate.latest()
+    .then(() => {
+        return new Promise((resolve, reject) => {
+            server.on('error', err => reject(err));
+            server.on('listening', () => {
+                console.log('Listening on', server.address());
+                resolve(server);
+            });
+            server.listen(3000);
+        })
+    });
+
+const stop = () => {
+    return new Promise((resolve, reject) => {
+        server.close(() => resolve());
+    }).then(() => knex.destroy())
+};
+
+module.exports = { app, server, stop, promiseToStart }
